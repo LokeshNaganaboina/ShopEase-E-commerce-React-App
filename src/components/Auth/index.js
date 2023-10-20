@@ -1,40 +1,40 @@
-/*
-import { Fragment, useEffect, useState } from "react"
-import { NavLink, useNavigate, useParams } from "react-router-dom"
-import Loader from "../UI/loader"
-import { useDispatch } from "react-redux"
-import { loginWithEmailAndPassword, signupWithEmailAndPassword } from "../../actions/auth"
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginWithEmailAndPassword, signupWithEmailAndPassword } from "../../actions/auth";
+import Loader from '../UI/loader'
 
 const AuthIndex = () => {
     const [details, setDetails] = useState({
         email: "",
         password: ""
-    })
-    const [loader, setLoader] = useState(false)
-    const params = useParams()
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    });
+    const [loader, setLoader] = useState(false);
+    const { type } = useParams(); // Destructuring params
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleInput = e => {
-        setDetails({
-            ...details,
-            [e.target.name]: e.target.value
-        })
-    }
+        const { name, value } = e.target; // Destructuring event target
+        setDetails(prevDetails => ({
+            ...prevDetails,
+            [name]: value
+        }));
+    };
 
     useEffect(() => {
         return () => {
-            setLoader(false)
+            setLoader(false);
             setDetails({
                 email: "",
                 password: ""
-            })
-        }
-    }, [])
+            });
+        };
+    }, []);
 
     const handleSubmission = e => {
         e.preventDefault();
-        if(params.type === "signup") {
+        if(type === "signup") {
             setLoader(true)
             dispatch(signupWithEmailAndPassword(details, data => {
                 if(data.error) {
@@ -48,7 +48,7 @@ const AuthIndex = () => {
                 setLoader(false)
             }))
         }
-        else if (params.type === "login") {
+        else if (type === "login") {
             setLoader(true)
             dispatch(loginWithEmailAndPassword(details, data => {
                 if(data.error) {
@@ -62,17 +62,17 @@ const AuthIndex = () => {
                 setLoader(false)
             }))
         }
-    }
+    };
 
     return (
-        <Fragment>
+        <>
             <div className="auth-container">
-                <div className="auth-container--box">
+            <div className="auth-container--box">
                     <div className="tab-selector">
                         <NavLink exact to={"/login"}><h3>Login</h3></NavLink>
                         <NavLink exact to={"/signup"}><h3>Signup</h3></NavLink>
                     </div>
-                    <form onSubmit={handleSubmission}>
+                    <form autoComplete={"off"} onSubmit={handleSubmission}>
                         <div className="input-wrap">
                             <label htmlFor="email">Email</label>
                             <input 
@@ -95,17 +95,15 @@ const AuthIndex = () => {
                         </div>
                         <div className="button-wrap">
                             <button className="login-btn">
-                                {params.type === "login" ? "Login" : "Signup"}
+                                {type === "login" ? "Login" : "Signup"}
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
             { loader && <Loader/> }
-        </Fragment>
-    )
+        </>
+    );
 }
 
-export default AuthIndex
-
-*/
+export default AuthIndex;

@@ -1,4 +1,3 @@
-
 import axios from "axios"
 
 const BASE_URL = 'https://identitytoolkit.googleapis.com/v1/'
@@ -66,6 +65,7 @@ export const checkIsLoggedIn = callback => {
                 type: 'LOGIN',
                 payload: {
                     idToken: token,
+                    localId: response.data.users[0].localId,
                     ...response.data
                 }
             })
@@ -77,5 +77,14 @@ export const checkIsLoggedIn = callback => {
                 response: error.response
             })
         }
+    }
+}
+
+export const logout = () => {
+    return dispatch => {
+        localStorage.removeItem("token")
+        dispatch({
+            type: "LOGOUT"
+        })
     }
 }
