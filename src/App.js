@@ -32,8 +32,6 @@ const App = () => {
         <SubHeader></SubHeader>
         <Routes>
           { !authState.idToken && <Route path="/:type" element={<AuthIndex />} />}
-          {/* <Route path="/login" element={<RedirectToHome/>} />
-          <Route path="/signup" element={<RedirectToHome/>} /> */}
           <Route path="/:category?" element={<Product></Product>} />
           <Route path="/" element={<Product />} />
           <Route path="*" element={<h1>Not Found!!</h1>} />

@@ -2,22 +2,36 @@ import ListItem from "./ListItems/ListItem";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../UI/loader";
-import { useNavigate, useParams } from "react-router-dom"; 
+import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 
 const Product = () => {
     const [items, setItems] = useState([]);
     const [loader, setLoader] = useState(true);
     const params = useParams();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const queryParams = searchParams.get("search");
 
     useEffect(() => {
         async function fetchItems() {
             try {
-                let slug = params.category ? `items-${params.category}.json` : 'items.json';
+                let slug = `items.json`;
+                if (params.category) {
+                    slug = `items-${params.category}.json`;
+                }
+                if (queryParams) {
+                    slug += `?search=${queryParams}`;
+                }
                 const response = await axios.get(`https://e-commerce-react-629c3-default-rtdb.firebaseio.com/${slug}`);
                 const data = response.data;
+
+                data.forEach(product => {
+                    const imageUrl = product.thumbnail; 
+                    //console.log(imageUrl); 
+                });
+
                 if (!data) {
-                    //navigate("/404");
+                    navigate("/404");
                     return;
                 }
 
@@ -33,16 +47,17 @@ const Product = () => {
             } finally {
                 setLoader(false);
             }
-
-            return () => {
-                setItems([])
-                setLoader(true)
-            }
         }
 
         fetchItems();
 
-    }, [params.category, navigate]);
+        // Cleanup function
+        return () => {
+            setItems([]);
+            setLoader(true);
+        }
+
+    }, [params.category, navigate, queryParams]);
 
     return (
         <>

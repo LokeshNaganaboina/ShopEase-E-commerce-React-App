@@ -6,6 +6,10 @@ const SearchBox = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState(searchParams.get("search") || "");
 
+    useEffect(() => {
+        setSearch(searchParams.get("search") || "");
+    }, [searchParams]);
+
     const handleInput = e => {
         setSearch(e.target.value);
     };

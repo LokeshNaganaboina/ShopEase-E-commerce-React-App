@@ -28,7 +28,7 @@ const ListItem = ({data}) =>{
     return (
         <Fragment>
         <div onClick={handleModal} className={"cardItem"}>
-            <img className={"productImg"} src={`/assets/${data.thumbnail}`} alt={data.title} ></img>
+            <img className={"productImg"} src={data.thumbnail} alt={data.title} ></img> 
             <div className={"cardItem_info"}>
                 <div className={"price"}>
                 <span>${data.discountedPrice}</span>
@@ -53,7 +53,7 @@ const ListItem = ({data}) =>{
         {showModal && <Modal onClose={handleModal}>
         <div className="item-card__modal">
             <div className="img-wrap">
-                <img className={"img-fluid"} src={`/assets/${data.thumbnail}`} alt={data.title}/>
+                <img className={"img-fluid"} src={data.thumbnail} alt={data.title}/>
             </div>
             <div className="meta">
                 <h3>{data.title}</h3>
